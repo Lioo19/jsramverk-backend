@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require('cors');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 
 const app = express();
 
@@ -33,10 +33,13 @@ app.use('/', index);
 
 app.use((req, res, next) => {
     var err = new Error("Not found");
+
     err.status = 404;
     next(err);
 });
 
 
 // Start up server
-app.listen(port, () => console.log(`My API listening on port ${port}!`));
+const server = app.listen(port, () => console.log(`My API listening on port ${port}!`));
+
+module.exports = server;

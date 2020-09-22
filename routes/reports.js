@@ -1,13 +1,15 @@
 let express = require('express');
 let router = express.Router();
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/texts.sqlite');
+// const sqlite3 = require('sqlite3').verbose();
+const db = require("../db/database.js");
+
 
 const jwt = require('jsonwebtoken');
 
 // route.use(bodyParser.json()); // for parsing application/json
-// route.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// for parsing application/x-www-form-urlencoded
+// route.use(bodyParser.urlencoded({ extended: true }));
 
 let config;
 
@@ -23,34 +25,38 @@ const secret = config.secret;
 
 router.get("/week/:which", (req, res) => {
     db.each("SELECT reporttext FROM reports WHERE reportnr = " + req.params.which,
-    function(err, row) {
-        const data = {
-            data: {
-                reporttext: row.reporttext
-            }
+        function(err, row) {
+            const data = {
+                data: {
+                    reporttext: row.reporttext
+                }
+            };
+
+            res.json(data);
         }
-        res.json(data);
-    });
-})
+    );
+});
 
 router.get("/edit/:which", (req, res) => {
     db.each("SELECT reporttext FROM reports WHERE reportnr = " + req.params.which,
-    function(err, row) {
-        const data = {
-            data: {
-                reporttext: row.reporttext
-            }
-        }
-        res.json(data);
-    });
-})
+        function(err, row) {
+            const data = {
+                data: {
+                    reporttext: row.reporttext
+                }
+            };
 
-router.get('/', function(req, res, next) {
+            res.json(data);
+        });
+});
+
+router.get('/', function(req, res) {
     const data = {
         data: {
             msg: "This message isn't going anywhere..."
         }
     };
+
     res.json(data);
 });
 
@@ -67,7 +73,7 @@ function updatepost(res, body) {
 
     db.run(`UPDATE reports SET reporttext = ? WHERE reportnr = ?`,
         rtext,
-        reportId,(err) => {
+        reportId, (err) => {
             if (err) {
                 return res.status(500).json({
                     errors: {
@@ -76,7 +82,8 @@ function updatepost(res, body) {
                         title: "Database error",
                         detail: "Uppdatering misslyckades"
                     }
-                });            }
+                });
+            }
             return res.status(201).json({
                 data: {
                     msg: "Report successfully updated"
@@ -89,7 +96,7 @@ router.post("/",
     (req, res, next) => checkToken(req, res, next),
     (req, res) => newpost(res, req.body));
 
-function newpost(res, body) {
+function newpost(res, body) {
     const reportId = body.reportId;
     const rtext = body.rtext;
 
@@ -105,7 +112,8 @@ function newpost(res, body) {
                         title: "Database error",
                         detail: "Rapport existerar redan"
                     }
-                });            }
+                });
+            }
             return res.status(201).json({
                 data: {
                     msg: "Report successfully created!"
@@ -117,8 +125,8 @@ function newpost(res, body) {
 function checkToken(req, res, next) {
     const token = req.headers['x-access-token'];
 
-    jwt.verify(token, secret, function(err, decoded) {
-        if (err) {
+    jwt.verify(token, secret, function(err) {
+        if (err) {
             return res.status(500).json({
                 errors: {
                     status: 500,
@@ -130,7 +138,7 @@ function checkToken(req, res, next) {
         }
         //valid token send on the request to next function
         next();
-    })
+    });
 }
 
 module.exports = router;
