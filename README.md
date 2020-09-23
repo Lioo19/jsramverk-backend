@@ -1,3 +1,5 @@
+https://travis-ci.org/Lioo19/jsramverk-backend.svg?branch=master
+
 ## Available Scripts
 
 In the project directory, you can run:
