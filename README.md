@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 [![Build Status](https://travis-ci.org/Lioo19/jsramverk-backend.svg?branch=master)](https://travis-ci.org/Lioo19/jsramverk-backend)
 
-=======
-https://travis-ci.org/Lioo19/jsramverk-backend.svg?branch=master
->>>>>>> f6b98621f8608c7fc6159656a8ac61242126de4e
 
 ## Available Scripts
 
