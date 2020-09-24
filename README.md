@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/Lioo19/jsramverk-backend.svg?branch=master)](https://travis-ci.org/Lioo19/jsramverk-backend)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Lioo19/jsramverk-backend/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Lioo19/jsramverk-backend/?branch=master)
+
 
 
 ## Available Scripts
